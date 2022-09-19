@@ -32,7 +32,7 @@ Vagrant.configure("2") do |config|
 
   # Create a private network, which allows host-only access to the machine
   # using a specific IP.
-  # config.vm.network "private_network", ip: "192.168.33.10"
+   config.vm.network "private_network", ip: "192.168.33.15"
 
   # Create a public network, which generally matched to bridged network.
   # Bridged networks make the machine appear as another physical device on
@@ -65,8 +65,12 @@ Vagrant.configure("2") do |config|
   # documentation for more information about their specific syntax and use.
    config.vm.provision "shell", inline: <<-SHELL
      yum install httpd wget unzip -y
-	 mkdir /opt/devopsdir
-	 free -m
-	 uptime
+	 systemctl start httpd
+	 systemctl enable httpd
+	 cd /tmp/
+	 wget https://www.tooplate.com/zip-templates/2119_gymso_fitness.zip
+	 unzip -o 2119_gymso_fitness.zip
+	 cp -r 2119_gymso_fitness/* /var/www/html/
+	 systemctl restart httpd
    SHELL
 end
